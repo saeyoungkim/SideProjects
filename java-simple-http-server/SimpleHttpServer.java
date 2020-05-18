@@ -17,21 +17,28 @@ public class SimpleHttpServer {
                 // create new server socket
                 ServerSocket serverSocket = new ServerSocket(port);
                 ){
-            System.out.println("now listen on " + port + " ...");
-            // listen...
-            socket = serverSocket.accept();
-            System.out.println("connected on " + port + " !!!");
 
-            // if connected, set inputstream and outputstream
-            inputStream = socket.getInputStream();
-            outputStream = socket.getOutputStream();
+            while(true) {
+                System.out.println("now listen on " + port + " ...");
+                // listen...
+                socket = serverSocket.accept();
+                System.out.println("connected on " + port + " !!!");
 
-            byte[] bytes = new byte[1024];
+                // if connected, set inputstream and outputstream
+                inputStream = socket.getInputStream();
+                outputStream = socket.getOutputStream();
 
-            inputStream.read(bytes);
+                byte[] bytes = new byte[1024];
 
-            // if conneteced, write hello world
-            outputStream.write("hello world".getBytes());
+                inputStream.read(bytes);
+
+                // if conneteced, write hello world
+                outputStream.write("hello world\r\n".getBytes());
+
+                socket.close();
+                inputStream.close();
+                outputStream.close();
+            }
 
         } catch (Exception e){
             e.printStackTrace();
