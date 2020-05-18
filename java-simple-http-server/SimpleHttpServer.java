@@ -32,8 +32,10 @@ public class SimpleHttpServer {
 
                 inputStream.read(bytes);
 
+                System.out.print(new String(bytes));
+
                 // if conneteced, write hello world
-                outputStream.write("hello world\r\n".getBytes());
+                outputStream.write(bytes);
 
                 socket.close();
                 inputStream.close();
