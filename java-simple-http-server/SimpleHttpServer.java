@@ -36,8 +36,12 @@ public class SimpleHttpServer {
     private static void writeTo(OutputStream outputStream, byte[] b) throws IOException {
         outputStream.write("HTTP/1.1 200 OK\r\n".getBytes());
         // Date
-        outputStream.write("Date: ".getBytes());
-        outputStream.write(getDateFromHttpFormat(new Date()).getBytes());
+//        outputStream.write("Date: ".getBytes());
+//        outputStream.write(getDateFromHttpFormat(new Date()).getBytes());
+//        outputStream.write("\r\n".getBytes());
+        // Content Type
+        outputStream.write("Content-Type: ".getBytes());
+        outputStream.write("text/html;charset=utf-8".getBytes());
         outputStream.write("\r\n".getBytes());
         // Content length
         outputStream.write("Content-Length: ".getBytes());
@@ -77,7 +81,8 @@ public class SimpleHttpServer {
                 outputStream = socket.getOutputStream();
 
                 byte[] b = readFrom(inputStream,1024);
-                writeTo(outputStream , b);
+
+                writeTo(outputStream , "<h1>こんにちは、くらいあんと！</h1>".getBytes());
 
                 socket.close();
                 inputStream.close();
