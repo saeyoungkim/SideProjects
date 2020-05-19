@@ -1,9 +1,8 @@
-import java.io.DataInputStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -82,7 +81,7 @@ public class SimpleHttpServer {
 
                 byte[] b = readFrom(inputStream,1024);
 
-                writeTo(outputStream , "<h1>こんにちは、くらいあんと！</h1>".getBytes());
+                writeTo(outputStream , Files.readAllBytes(Paths.get("public/index.html")));
 
                 socket.close();
                 inputStream.close();
