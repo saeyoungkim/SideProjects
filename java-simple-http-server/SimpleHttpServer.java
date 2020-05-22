@@ -26,35 +26,6 @@ public class SimpleHttpServer {
         return bytes;
     }
 
-    private static String getDateFromHttpFormat(Date date){
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEE, dd MMM YYYY HH:mm:ss z", Locale.ENGLISH);
-        simpleDateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-        return simpleDateFormat.format(date);
-    }
-
-    private static void writeTo(OutputStream outputStream, byte[] b) throws IOException {
-        outputStream.write("HTTP/1.1 200 OK\r\n".getBytes());
-        // Date
-//        outputStream.write("Date: ".getBytes());
-//        outputStream.write(getDateFromHttpFormat(new Date()).getBytes());
-//        outputStream.write("\r\n".getBytes());
-        // Content Type
-        outputStream.write("Content-Type: ".getBytes());
-        outputStream.write("text/html;charset=utf-8".getBytes());
-        outputStream.write("\r\n".getBytes());
-        // Content length
-        outputStream.write("Content-Length: ".getBytes());
-        outputStream.write(Integer.toString(getLength(b)).getBytes());
-        outputStream.write("\r\n".getBytes());
-        // Connection
-        outputStream.write("Connection: ".getBytes());
-        outputStream.write("Close".getBytes());
-        outputStream.write("\r\n".getBytes());
-        // CRLF
-        outputStream.write("\r\n".getBytes());
-        // body
-        outputStream.write(b);
-    }
 
     public static void main(String[] args) {
 
@@ -79,9 +50,13 @@ public class SimpleHttpServer {
                 inputStream = socket.getInputStream();
                 outputStream = socket.getOutputStream();
 
-                byte[] b = readFrom(inputStream,1024);
+                HTTPRequestParser httpRequestParser = new HTTPRequestParser();
+                Request request = new Request();
+                HTTPRequestHandler httpRequestHandler = new HTTPRequestHandler();
 
-                writeTo(outputStream , Files.readAllBytes(Paths.get("public/index.html")));
+                httpRequestParser.parseFrom(request, inputStream);
+                Response response = httpRequestHandler.handleRequest(request);
+                response.writeTo(outputStream);
 
                 socket.close();
                 inputStream.close();
