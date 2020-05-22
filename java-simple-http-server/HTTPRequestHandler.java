@@ -10,7 +10,7 @@ public class HTTPRequestHandler {
         Path path = Paths.get(request.get("Target"));
 
         if(!Files.exists(path)){
-            return new Response(ResponseResult.NOT_FOUND, request ,"".getBytes());
+            return new Response(ResponseResult.NOT_FOUND, request , Files.readAllBytes(Paths.get("public/404.html")));
         }
         else {
             return new Response(ResponseResult.OK, request, Files.readAllBytes(Paths.get("public/index.html")));

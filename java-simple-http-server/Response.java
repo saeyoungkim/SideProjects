@@ -20,6 +20,7 @@ public class Response {
     public void writeTo(OutputStream outputStream) throws IOException {
         outputStream.write((this.request.get("Protocol") + " " + this.responseResult.getStatusCode() + " " + this.responseResult.getStatus() + "\r\n").getBytes());
         outputStream.write("Content-Type: text/html\r\n".getBytes());
+        outputStream.write(("Content-Length: " + this.bytes.length + "\r\n").getBytes());
         outputStream.write("\r\n".getBytes());
         outputStream.write(this.bytes);
     }

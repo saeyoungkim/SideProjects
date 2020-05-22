@@ -6,8 +6,9 @@ enum ResponseResult{
 
     private String statusCode;
     private String status;
+    private String body;
 
-    ResponseResult(String statusCode, String status){
+    ResponseResult(String statusCode, String status¥){
         this.statusCode = statusCode;
         this.status = status;
     }
