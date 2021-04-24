@@ -37,7 +37,19 @@ tasks.withType(JavaCompile) {
     options.encoding = "UTF-8"
 }
 
-application {
-    // Define the main class for the application.
-    mainClass = 'movie.scrapper.App'
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'movie.scrapper.App',
+                'Class-Path': configurations.compileClasspath.files.collect {"$it.name"}.join(' ')
+        )
+    }
+    from {
+        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
+
+//application {
+//    // Define the main class for the application.
+//    mainClass = 'movie.scrapper.App'
+//}
